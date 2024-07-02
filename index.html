@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="images/image1.png" type="image/png" />
+    <title>Dreamr</title>
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="0" height="0">
+      <defs>
+        <filter id="invert">
+          <feComponentTransfer>
+            <feFuncR type="table" tableValues="1 0" />
+            <feFuncG type="table" tableValues="1 0" />
+            <feFuncH type="table" tableValues="1 0" />
+          </feComponentTransfer>
+        </filter>
+      </defs>
+    </svg>
+    <div class="parent-div">
+      <canvas></canvas>
+      <img src="images/image0.png" class="background-image" alt="Background" />
+      <header class="header">
+        <nav class="navbar">
+          <div class="navbar__brand" onclick="handleReload()">
+            <img
+              src="images/image1.png"
+              class="navbar__brand-image"
+              alt="Logo"
+            />
+            <span class="navbar__brand-name invert">Dreamr</span>
+          </div>
+          <div class="navbar__menu">
+            <button
+              onclick="handleContactClick()"
+              class="navbar__menu-item invert"
+            >
+              Contact
+            </button>
+          </div>
+        </nav>
+      </header>
+      <div class="hero-content invert">
+        <h1 class="hero-content__title">Explore Your <span>Dreams</span></h1>
+        <div class="hero-search">
+          <div class="search-bar">
+            <span class="search-bar__text">Discover</span>
+            <input
+              type="text"
+              class="search-bar__input"
+              placeholder="Type your dream here..."
+              onkeypress="handleKeyPress(event)"
+            />
+            <div class="search-bar__icon-wrapper" onclick="handleSearch()">
+              <div
+                class="loading-spinner small-spinner"
+                id="loading-spinner"
+              ></div>
+              <img
+                src="graphics/graphics1.png"
+                class="search-bar__icon-image search-bar__icon"
+                alt="Search"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="error-message" id="error-message"></p>
+      <div class="popup-overlay" id="contact-popup" onclick="closePopup(event)">
+        <div class="popup-content" onclick="event.stopPropagation()">
+          <h2 class="popup-title">Nate Laquis</h2>
+          <button class="popup-close" onclick="closePopup(event)">×</button>
+          <ul class="social-links">
+            <li>
+              <a
+                href="https://www.instagram.com/natecreateshq"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><img
+                  src="graphics/instagram.png"
+                  class="social-logo"
+                  alt="Instagram"
+                />
+                Instagram</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.tiktok.com/@natecreateshq"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><img
+                  src="graphics/tiktok.png"
+                  class="social-logo"
+                  alt="TikTok"
+                />
+                TikTok</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.youtube.com/natecreateshq"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><img
+                  src="graphics/youtube.png"
+                  class="social-logo"
+                  alt="YouTube"
+                />
+                YouTube</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.facebook.com/natecreateshq"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><img
+                  src="graphics/facebook.png"
+                  class="social-logo"
+                  alt="Facebook"
+                />
+                Facebook</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com/in/nathaniel-laquis"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><img
+                  src="graphics/linkedin.png"
+                  class="social-logo"
+                  alt="LinkedIn"
+                />
+                LinkedIn</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="popup-overlay" id="search-popup" onclick="closePopup(event)">
+        <div
+          class="popup-content dynamic-popup"
+          onclick="event.stopPropagation()"
+        >
+          <h2 class="popup-title">Dream Analysis</h2>
+          <button class="popup-close" onclick="closePopup(event)">×</button>
+          <p id="chatbot-response"></p>
+        </div>
+      </div>
+    </div>
+    <script src="scripts.js"></script>
+    <script src="three.min.js"></script>
+    <script src="postprocessing.min.js"></script>
+    <script>
+      let scene,
+        camera,
+        cloudParticles = [],
+        composer;
+
+      function init() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(
+          60,
+          window.innerWidth / window.innerHeight,
+          1,
+          1000
+        );
+        camera.position.z = 1;
+        camera.rotation.x = 1.16;
+        camera.rotation.y = -0.12;
+        camera.rotation.z = 0.27;
+
+        let ambient = new THREE.AmbientLight(0x8a8a8a); // Slightly lighter ambient light color
+        scene.add(ambient);
+
+        let directionalLight = new THREE.DirectionalLight(0x2c3e50); // Medium blue directional light
+        directionalLight.position.set(0, 0, 1);
+        scene.add(directionalLight);
+
+        let blueLight = new THREE.PointLight(0x34495e, 50, 450, 1.7); // Slightly lighter dark blue point light
+        blueLight.position.set(200, 300, 100);
+        scene.add(blueLight);
+        let lightBlueLight = new THREE.PointLight(0x5d6d7e, 50, 450, 1.7); // Light blue point light
+        lightBlueLight.position.set(100, 300, 100);
+        scene.add(lightBlueLight);
+        let mediumBlueLight = new THREE.PointLight(0x2c3e50, 50, 450, 1.7); // Medium blue point light
+        mediumBlueLight.position.set(300, 300, 200);
+        scene.add(mediumBlueLight);
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        scene.fog = new THREE.FogExp2(0x34495e, 0.001); // Slightly lighter fog color
+        renderer.setClearColor(scene.fog.color);
+        document.body.appendChild(renderer.domElement);
+
+        let loader = new THREE.TextureLoader();
+        loader.load("smoke.png", function (texture) {
+          cloudGeo = new THREE.PlaneBufferGeometry(500, 500);
+
+          // Array of slightly lighter blue colors to randomly select from
+          const cloudColors = ["#34495e", "#5d6d7e", "#7f8c8d"];
+
+          // Create one specific cloud with the color 0x5d6d7e
+          let specificCloudMaterial = new THREE.MeshLambertMaterial({
+            map: texture,
+            transparent: true,
+            color: 0x5d6d7e, // Light blue color
+          });
+          let specificCloud = new THREE.Mesh(cloudGeo, specificCloudMaterial);
+          specificCloud.position.set(
+            Math.random() * 800 - 400,
+            500,
+            Math.random() * 500 - 500
+          );
+          specificCloud.rotation.x = 1.16;
+          specificCloud.rotation.y = -0.12;
+          specificCloud.rotation.z = Math.random() * 2 * Math.PI;
+          specificCloud.material.opacity = 0.55;
+          cloudParticles.push(specificCloud);
+          scene.add(specificCloud);
+
+          // Create other clouds with random colors
+          for (let p = 0; p < 49; p++) {
+            let cloudMaterial = new THREE.MeshLambertMaterial({
+              map: texture,
+              transparent: true,
+              color:
+                cloudColors[Math.floor(Math.random() * cloudColors.length)], // Randomly select from cloudColors
+            });
+            let cloud = new THREE.Mesh(cloudGeo, cloudMaterial);
+            cloud.position.set(
+              Math.random() * 800 - 400,
+              500,
+              Math.random() * 500 - 500
+            );
+            cloud.rotation.x = 1.16;
+            cloud.rotation.y = -0.12;
+            cloud.rotation.z = Math.random() * 2 * Math.PI;
+            cloud.material.opacity = 0.55;
+            cloudParticles.push(cloud);
+            scene.add(cloud);
+          }
+        });
+
+        loader.load("stars.jpg", function (texture) {
+          const textureEffect = new POSTPROCESSING.TextureEffect({
+            blendFunction: POSTPROCESSING.BlendFunction.COLOR_DODGE,
+            texture: texture,
+          });
+          textureEffect.blendMode.opacity.value = 0.2;
+
+          const bloomEffect = new POSTPROCESSING.BloomEffect({
+            blendFunction: POSTPROCESSING.BlendFunction.COLOR_DODGE,
+            kernelSize: POSTPROCESSING.KernelSize.SMALL,
+            useLuminanceFilter: true,
+            luminanceThreshold: 0.3,
+            luminanceSmoothing: 0.75,
+          });
+          bloomEffect.blendMode.opacity.value = 1.5;
+
+          const vignetteEffect = new POSTPROCESSING.VignetteEffect({
+            // Vignette effect for dimming edges
+            darkness: 0.5,
+            offset: 0.5,
+          });
+
+          let effectPass = new POSTPROCESSING.EffectPass(
+            camera,
+            bloomEffect,
+            textureEffect,
+            vignetteEffect
+          );
+          effectPass.renderToScreen = true;
+
+          composer = new POSTPROCESSING.EffectComposer(renderer);
+          composer.addPass(new POSTPROCESSING.RenderPass(scene, camera));
+          composer.addPass(effectPass);
+
+          window.addEventListener("resize", onWindowResize, false);
+          render();
+        });
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function render() {
+        cloudParticles.forEach((p) => {
+          p.rotation.z -= 0.001;
+        });
+        composer.render(0.1);
+        requestAnimationFrame(render);
+      }
+
+      init();
+    </script>
+  </body>
+</html>

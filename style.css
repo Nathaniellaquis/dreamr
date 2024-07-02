@@ -1,0 +1,411 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+:root {
+  --white: #fff;
+  --primary-color: #282c34;
+  --transparent: rgba(255, 255, 255, 0.2);
+  --popup-background: rgba(255, 255, 255, 1);
+  --popup-border: #e0e0e0;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+.parent-div {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  text-align: center;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  width: calc(100% - 80px);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background: transparent;
+  z-index: 10;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  mix-blend-mode: difference; /* Added blend mode for logo text */
+}
+
+.navbar__brand-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.navbar__brand-name {
+  font-size: 1.8rem;
+  color: var(--white);
+}
+
+.navbar__menu {
+  flex: 1;
+  text-align: right;
+}
+
+.navbar__menu-item {
+  font-size: 1.5rem;
+  color: var(--white);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  mix-blend-mode: difference; /* Added blend mode for contact button */
+}
+
+.hero-content {
+  margin-top: -112px;
+  text-align: center;
+  mix-blend-mode: difference; /* Added blend mode for hero content */
+}
+
+.hero-content__title {
+  font-size: 3.75rem;
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.2;
+}
+
+.hero-search {
+  margin-top: 85px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 60vw;
+  height: 32px;
+  background: var(--transparent);
+  padding: 8px 15px;
+  border-radius: 22px;
+  cursor: pointer;
+  margin: auto;
+}
+
+.search-bar__text {
+  font-size: 1.1rem;
+  color: var(--white);
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.search-bar__input {
+  flex: 1;
+  margin: 0 10px;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--white);
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-bar__input::placeholder {
+  color: var(--white);
+  opacity: 1;
+}
+
+.search-bar__input:focus {
+  outline: none;
+  border: none;
+}
+
+.search-bar__icon-wrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar__icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+}
+
+.search-bar__icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #fff;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  display: none; /* Hidden by default */
+}
+
+.small-spinner {
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.popup-overlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.popup-content {
+  background: var(--popup-background);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  border: 1px solid var(--popup-border);
+  max-width: 400px;
+  width: 100%;
+  max-height: 70vh;
+  overflow-y: auto;
+  color: black;
+  position: relative;
+}
+
+.dynamic-popup p {
+  white-space: pre-wrap;
+  text-align: left;
+}
+
+.popup-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.popup-close {
+  background: none;
+  color: var(--primary-color);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  outline: none;
+}
+
+.popup-close:hover {
+  color: gray;
+}
+
+.social-links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.social-links li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.social-links a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.social-links a:hover {
+  text-decoration: underline;
+}
+
+.social-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    width: calc(100% - 40px);
+    padding: 10px 20px;
+  }
+
+  .navbar__brand-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navbar__brand-name {
+    font-size: 1.5rem;
+  }
+
+  .navbar__menu-item {
+    font-size: 1.2rem;
+  }
+
+  .hero-content__title {
+    font-size: 2.5rem;
+  }
+
+  .hero-search {
+    margin-top: 65px;
+  }
+
+  .search-bar {
+    width: 80vw;
+    height: 30px;
+    padding: 6px 12px;
+  }
+
+  .search-bar__text {
+    font-size: 1rem;
+  }
+
+  .search-bar__input {
+    font-size: 0.9rem;
+  }
+
+  .popup-content {
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .popup-title {
+    font-size: 1.5rem;
+  }
+
+  .loading-spinner {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    width: calc(100% - 20px);
+    padding: 5px 10px;
+  }
+
+  .navbar__brand-image {
+    width: 30px;
+    height: 30px;
+  }
+
+  .navbar__brand-name {
+    font-size: 1.2rem;
+  }
+
+  .navbar__menu-item {
+    font-size: 1rem;
+  }
+
+  .hero-content {
+    margin-top: -80px;
+  }
+
+  .hero-content__title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .hero-content__title span {
+    display: block;
+  }
+
+  .search-bar {
+    width: 90vw;
+    height: 24px;
+    padding: 5px;
+  }
+
+  .search-bar__text {
+    font-size: 0.8rem;
+  }
+
+  .search-bar__input {
+    font-size: 0.8rem;
+  }
+
+  .popup-content {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .popup-title {
+    font-size: 1.2rem;
+  }
+
+  .loading-spinner {
+    width: 18px;
+    height: 18px;
+  }
+}
