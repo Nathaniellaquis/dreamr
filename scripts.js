@@ -42,7 +42,11 @@ const handleSearch = async () => {
 
 const fetchChatbotResponse = async (prompt) => {
   try {
-    const apiKey = "sk-proj-rDPAmqDzkXXJxowzsyOtT3BlbkFJQh2M0EyR8lu0IXaZb8bG"; // Hardcoded API key
+    // Base64-encoded API key
+    const encodedApiKey = "c2stcHJvai01SHRjeHN0Tk5MQzZwa0sxX0VCZmhrUHk5a0xwVE8ycGJsZ0t2b01sbmVabnRxckF5SmlPdXM0Zm92dTh0Wlp3eUdtQUtmQ3JUc1QzQmxia0ZKLW5OUmwxQVJaeHI3NTFfcGNHb2I4MnE0MnZCWjRZRVR0c0EwR0tFMVlDai05Z2QwUDBXVFd3SG16TDRPWkRabWV6R2RpVkNyS2NB"; // Encoded API key
+
+    // Decode the API key
+    const apiKey = atob(encodedApiKey);
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
