@@ -42,24 +42,20 @@ const handleSearch = async () => {
 
 const fetchChatbotResponse = async (prompt) => {
   try {
-    // Base64-encoded API key
-    const encodedApiKey = "c2stcHJvai01SHRjeHN0Tk5MQzZwa0sxX0VCZmhrUHk5a0xwVE8ycGJsZ0t2b01sbmVabnRxckF5SmlPdXM0Zm92dTh0Wlp3eUdtQUtmQ3JUc1QzQmxia0ZKLW5OUmwxQVJaeHI3NTFfcGNHb2I4MnE0MnZCWjRZRVR0c0EwR0tFMVlDai05Z2QwUDBXVFd3SG16TDRPWkRabWV6R2RpVkNyS2NB"; // Encoded API key
-
-    // Decode the API key
-    const apiKey = atob(encodedApiKey);
+    const k = "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"; 
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: Bearer ${K},
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
-            content: `You are an experienced psychiatrist with a deep understanding of the human mind and dream interpretation. Analyze the following dream and provide an insightful, interesting, and concise explanation. Here's the dream: "${prompt}"`,
+            content: You are an experienced psychiatrist with a deep understanding of the human mind and dream interpretation. Analyze the following dream and provide an insightful, interesting, and concise explanation. Here's the dream: "${prompt}",
           },
         ],
       }),
@@ -67,14 +63,14 @@ const fetchChatbotResponse = async (prompt) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`API Error: ${response.status} - ${errorText}`);
+      throw new Error(API Error: ${response.status} - ${errorText});
     }
 
     const data = await response.json();
     return data.choices[0].message.content;
   } catch (error) {
     console.error("Error fetching chatbot response:", error);
-    return `An error occurred: ${error.message}`;
+    return An error occurred: ${error.message};
   }
 };
 
